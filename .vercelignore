@@ -1,0 +1,20 @@
+# No ignorar archivos críticos del proyecto
+# Solo ignorar lo innecesario
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Control de versiones
+.git
+.gitignore
+
+# Desarrollo local
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# No ignorar node_modules en frontend (se necesita para build)
+# No ignorar backend/ (se necesita para funcionalidad)
+# No ignorar requirements.txt (se necesita para instalar dependencias)

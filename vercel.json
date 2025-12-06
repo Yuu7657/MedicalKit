@@ -4,5 +4,20 @@
   "installCommand": "cd frontend && npm ci",
   "env": {
     "NODE_ENV": "production"
-  }
+  },
+  "functions": {
+    "api/index.py": {
+      "runtime": "python3.11"
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
 }
