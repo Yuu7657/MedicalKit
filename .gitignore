@@ -1,0 +1,28 @@
+# Environment variables (archivos sensibles)
+.env
+.env.local
+.env.*.local
+
+# Backend
+backend/__pycache__/
+backend/.pytest_cache/
+backend/venv/
+backend/.venv/
+backend/*.pyc
+backend/.env
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
