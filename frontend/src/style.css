@@ -1,0 +1,182 @@
+/* ========= Tema base global ================================== */
+:root {
+    color-scheme: light;
+    --mk-bg: #f9fafb;
+    --mk-bg-soft: #f1f5f9;
+    --mk-text: #0f172a;
+    --mk-text-soft: #4b5563;
+    --mk-card-bg: #ffffff;
+    --mk-border: #e5e7eb;
+    --mk-accent: #0ea5e9;
+    --mk-accent-dark: #0369a1;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--mk-bg);
+    color: var(--mk-text);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+        Ubuntu, Cantarell, "Noto Sans", Arial, sans-serif;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Contenedor principal */
+#app {
+    background: linear-gradient(180deg, #f9fafb 0%, #f0fdf4 100%);
+    color: var(--mk-text);
+}
+
+/* Por si algún contenedor usa .card o .btn (Inicio, etc.) */
+.card,
+.user-card,
+.modal,
+.panel,
+.box {
+    background: var(--mk-card-bg);
+    color: var(--mk-text);
+    border: 1px solid var(--mk-border);
+}
+
+.btn,
+button {
+    cursor: pointer;
+}
+
+/* ========= MODO ALTO CONTRASTE =============================== */
+/* Se activa añadiendo la clase .mk-high-contrast al <html> */
+
+html.mk-high-contrast {
+    color-scheme: dark;
+    --mk-bg: #020617;
+    --mk-bg-soft: #020617;
+    --mk-text: #f9fafb;
+    --mk-text-soft: #e5e7eb;
+    --mk-card-bg: #020617;
+    --mk-border: #4b5563;
+    --mk-accent: #38bdf8;
+    --mk-accent-dark: #0ea5e9;
+}
+
+/* Fondo general y texto */
+html.mk-high-contrast,
+html.mk-high-contrast body {
+    background: var(--mk-bg);
+    color: var(--mk-text);
+}
+
+/* App raíz: forzamos el fondo oscuro incluso si el componente tiene gradiente */
+html.mk-high-contrast #app {
+    background: var(--mk-bg) !important;
+    color: var(--mk-text);
+}
+
+/* Titulares y texto */
+html.mk-high-contrast h1,
+html.mk-high-contrast h2,
+html.mk-high-contrast h3,
+html.mk-high-contrast h4,
+html.mk-high-contrast h5,
+html.mk-high-contrast h6,
+html.mk-high-contrast strong {
+    color: var(--mk-text);
+}
+
+html.mk-high-contrast p,
+html.mk-high-contrast span,
+html.mk-high-contrast li,
+html.mk-high-contrast label {
+    color: var(--mk-text-soft);
+}
+
+/* Tarjetas, paneles y contenedores comunes */
+html.mk-high-contrast .card,
+html.mk-high-contrast .user-card,
+html.mk-high-contrast .a11y-panel,
+html.mk-high-contrast .modal,
+html.mk-high-contrast .panel,
+html.mk-high-contrast .box,
+html.mk-high-contrast main,
+html.mk-high-contrast section,
+html.mk-high-contrast article,
+html.mk-high-contrast .table-wrapper {
+    background-color: var(--mk-bg-soft) !important;
+    color: var(--mk-text) !important;
+    border-color: var(--mk-border) !important;
+    box-shadow: 0 0 0 1px var(--mk-border) !important;
+}
+
+/* Tabs de navegación */
+html.mk-high-contrast .tabs {
+    background: #020617 !important;
+    border: 1px solid var(--mk-border);
+}
+
+html.mk-high-contrast .tab {
+    background: transparent !important;
+    color: var(--mk-text-soft) !important;
+}
+
+html.mk-high-contrast .tab.active {
+    background: #f9fafb !important;
+    color: #020617 !important;
+}
+
+/* Botones principales */
+html.mk-high-contrast button,
+html.mk-high-contrast .btn {
+    background: #f9fafb !important;
+    color: #020617 !important;
+    border-color: var(--mk-border) !important;
+}
+
+/* Texto secundario / descripciones */
+html.mk-high-contrast .sub,
+html.mk-high-contrast .subtitle,
+html.mk-high-contrast small {
+    color: var(--mk-text-soft) !important;
+}
+
+/* Links */
+html.mk-high-contrast a {
+    color: #bfdbfe !important;
+}
+
+/* Chips / badges muy claros (como las “píldoras” de frecuencia) */
+html.mk-high-contrast .chip,
+html.mk-high-contrast .badge,
+html.mk-high-contrast .pill {
+    background: #111827 !important;
+    color: #f9fafb !important;
+}
+
+/* Inputs */
+html.mk-high-contrast input,
+html.mk-high-contrast select,
+html.mk-high-contrast textarea {
+    background: #020617 !important;
+    color: var(--mk-text) !important;
+    border-color: var(--mk-border) !important;
+}
+
+html.mk-high-contrast input::placeholder,
+html.mk-high-contrast textarea::placeholder {
+    color: #9ca3af !important;
+}
+
+/* Iconos SVG (heroicons, etc.) */
+html.mk-high-contrast svg {
+    stroke: currentColor;
+    fill: none;
+}

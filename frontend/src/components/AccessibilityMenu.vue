@@ -1,0 +1,242 @@
+<!-- src/components/AccessibilityMenu.vue -->
+<template>
+  <div class="a11y-wrapper">
+    <!-- FAB: solo abre/cierra el panel -->
+    <button
+      class="a11y-fab"
+      type="button"
+      @click="togglePanel"
+      :aria-expanded="open ? 'true' : 'false'"
+      aria-haspopup="true"
+      aria-label="Menú de accesibilidad"
+    >
+      <span class="fab-icon">
+        <!-- Icono serio de Heroicons -->
+        <AdjustmentsHorizontalIcon class="icon-main" />
+      </span>
+    </button>
+
+    <!-- Panel (solo ajustes de texto + reset) -->
+    <transition name="fade-scale">
+      <div
+        v-if="open"
+        class="a11y-panel"
+        role="menu"
+        @click.stop
+      >
+        <button
+          class="a11y-item"
+          type="button"
+          role="menuitem"
+          @click="increaseFont"
+          :disabled="baseFontSize >= MAX_FONT"
+        >
+          <SquaresPlusIcon class="a11y-icon" />
+          <span>Aumentar texto</span>
+        </button>
+
+        <button
+          class="a11y-item"
+          type="button"
+          role="menuitem"
+          @click="decreaseFont"
+          :disabled="baseFontSize <= MIN_FONT"
+        >
+          <Squares2X2Icon class="a11y-icon" />
+          <span>Reducir texto</span>
+        </button>
+
+        <button
+          class="a11y-item"
+          type="button"
+          role="menuitem"
+          @click="resetAll"
+        >
+          <ArrowPathIcon class="a11y-icon" />
+          <span>Restablecer</span>
+        </button>
+      </div>
+    </transition>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue"
+import {
+  AdjustmentsHorizontalIcon, // FAB
+  SquaresPlusIcon,
+  Squares2X2Icon,
+  ArrowPathIcon
+} from "@heroicons/vue/24/outline"
+
+/* ----------------- Constantes ----------------- */
+const STORAGE_FONT_KEY = "mk_font_percent"
+const DEFAULT_FONT = 100
+const MIN_FONT = 80
+const MAX_FONT = 140
+
+/* ----------------- Estado ----------------- */
+const open = ref(false)
+const baseFontSize = ref(DEFAULT_FONT) // porcentaje
+
+/* ----------------- Helpers DOM ----------------- */
+function applyFontSize() {
+  document.documentElement.style.fontSize = `${baseFontSize.value}%`
+}
+
+/* ----------------- Acciones ----------------- */
+function togglePanel() {
+  open.value = !open.value
+}
+
+function increaseFont() {
+  if (baseFontSize.value >= MAX_FONT) return
+  baseFontSize.value = Math.min(baseFontSize.value + 10, MAX_FONT)
+  applyFontSize()
+  localStorage.setItem(STORAGE_FONT_KEY, String(baseFontSize.value))
+}
+
+function decreaseFont() {
+  if (baseFontSize.value <= MIN_FONT) return
+  baseFontSize.value = Math.max(baseFontSize.value - 10, MIN_FONT)
+  applyFontSize()
+  localStorage.setItem(STORAGE_FONT_KEY, String(baseFontSize.value))
+}
+
+function resetAll() {
+  baseFontSize.value = DEFAULT_FONT
+  applyFontSize()
+  localStorage.removeItem(STORAGE_FONT_KEY)
+}
+
+/* ----------------- Eventos globales ----------------- */
+function handleClickOutside(e) {
+  const wrapper = document.querySelector(".a11y-wrapper")
+  if (wrapper && !wrapper.contains(e.target)) {
+    open.value = false
+  }
+}
+
+function handleKeydown(e) {
+  // Cerrar con ESC
+  if (e.key === "Escape") {
+    open.value = false
+  }
+}
+
+onMounted(() => {
+  // Cargar preferencias guardadas SOLO de tamaño de fuente
+  try {
+    const savedFont = parseInt(localStorage.getItem(STORAGE_FONT_KEY) ?? "", 10)
+    if (!Number.isNaN(savedFont)) {
+      baseFontSize.value = Math.min(Math.max(savedFont, MIN_FONT), MAX_FONT)
+    }
+  } catch {
+    // ignoramos errores de localStorage
+  }
+
+  applyFontSize()
+
+  document.addEventListener("click", handleClickOutside)
+  document.addEventListener("keydown", handleKeydown)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside)
+  document.removeEventListener("keydown", handleKeydown)
+})
+</script>
+
+<style scoped>
+.a11y-wrapper {
+  position: fixed;
+  right: 1.4rem;
+  bottom: 1.4rem;
+  z-index: 60;
+}
+
+/* FAB (botón flotante) */
+.a11y-fab {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: none;
+  background: #0ea5e9;              /* Azul MedicalKit */
+  color: #f9fafb;                   /* El Heroicon usa currentColor */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.45);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s;
+}
+
+.a11y-fab:hover {
+  background: #0284c7;
+  transform: translateY(-1px);
+  box-shadow: 0 20px 44px rgba(15, 23, 42, 0.55);
+}
+
+.fab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-main {
+  width: 24px;
+  height: 24px;
+}
+
+/* Panel */
+.a11y-panel {
+  margin-top: 0.75rem;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 0.75rem 0.9rem;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.22);
+  min-width: 235px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.a11y-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.55rem 0.35rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #111827;
+  transition: background 0.15s ease, transform 0.1s ease, opacity 0.1s ease;
+}
+
+.a11y-item:hover:not(:disabled) {
+  background: #f3f4f6;
+  transform: translateY(-1px);
+}
+
+.a11y-item:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.a11y-icon {
+  width: 22px;
+  height: 22px;
+}
+
+/* Animación panel */
+.fade-scale-enter-active,
+.fade-scale-leave-active {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.fade-scale-enter-from,
+.fade-scale-leave-to {
+  opacity: 0;
+  transform: translateY(4px) scale(0.98);
+}
+</style>
