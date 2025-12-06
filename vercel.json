@@ -5,9 +5,18 @@
   "env": {
     "NODE_ENV": "production"
   },
-  "rewrites": [
+  "functions": {
+    "api/*.py": {
+      "runtime": "python@3.11"
+    }
+  },
+  "routes": [
     {
-      "source": "/(.*)",
+      "src": "/api/(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/(.*)",
       "destination": "/index.html"
     }
   ]
