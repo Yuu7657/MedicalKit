@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: medicalkit-api
+    env: python311
+    buildCommand: pip install -r requirements.txt
+    startCommand: cd backend && gunicorn app:app
+    envVars:
+      - key: SUPABASE_URL
+        scope: run
+      - key: SUPABASE_KEY
+        scope: run

@@ -9,8 +9,14 @@ from routes.medicamentos import medicamentos_bp  # Blueprint de medicamentos
 
 app = Flask(__name__)
 
-# Permitir peticiones desde tu PWA (Vite en localhost:5174)
-CORS(app)
+# Permitir CORS desde Vercel y localhost
+CORS(app, resources={
+    r"/medicamentos/*": {
+        "origins": ["*"],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
 
 # Registra el Blueprint de medicamentos en /medicamentos
 app.register_blueprint(medicamentos_bp, url_prefix='/medicamentos')
