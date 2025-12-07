@@ -1,5 +1,4 @@
-# No ignorar archivos críticos del proyecto
-# Solo ignorar lo innecesario
+# Ignorar archivos innecesarios para Vercel (solo frontend)
 
 # Sistema operativo
 .DS_Store
@@ -15,6 +14,17 @@ Thumbs.db
 *.swp
 *.swo
 
-# No ignorar node_modules en frontend (se necesita para build)
-# No ignorar backend/ (se necesita para funcionalidad)
-# No ignorar requirements.txt (se necesita para instalar dependencias)
+# Backend - NO necesario en Vercel (va a Render)
+backend/
+api/
+Procfile
+requirements.txt
+RENDER_DEPLOY.md
+SETUP_FINAL.md
+DEPLOY.md
+
+# Archivos locales
+*.pyc
+__pycache__/
+.env
+.env.local
