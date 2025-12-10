@@ -33,6 +33,9 @@ body {
     color: var(--mk-text);
     font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
         Ubuntu, Cantarell, "Noto Sans", Arial, sans-serif;
+    overflow-x: hidden;
+    /* Prevenir scroll horizontal */
+    max-width: 100vw;
 }
 
 a {
