@@ -526,4 +526,121 @@ function goToMedicamentos() {
     margin-top: 1.5rem;
   }
 }
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .home {
+    margin: 1rem auto 2rem;
+    padding: 0 1rem 1rem;
+  }
+
+  /* Hero */
+  .hero {
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-left h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .hero-pill {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.7rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-checks {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  /* Features */
+  .features {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .features h2 {
+    font-size: 1.5rem;
+  }
+
+  .features-grid {
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  .feature-card {
+    padding: 1.2rem;
+  }
+
+  /* Steps */
+  .steps-section {
+    margin-top: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .steps-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0;
+  }
+
+  .step-card {
+    padding: 1.2rem;
+  }
+
+  /* Why */
+  .why {
+    margin-top: 2rem;
+  }
+
+  .why h2 {
+    font-size: 1.5rem;
+  }
+
+  .why-grid {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+
+  .why-item {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  /* CTA */
+  .cta {
+    margin-top: 2rem;
+  }
+
+  .cta-card {
+    padding: 1.5rem 1.2rem;
+  }
+
+  .cta-card h2 {
+    font-size: 1.4rem;
+  }
+
+  .cta-card p {
+    font-size: 0.95rem;
+  }
+}
 </style>

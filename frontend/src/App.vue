@@ -98,6 +98,7 @@ const is = (p) => {
   flex-direction: column;
   align-items: center;
   position: relative;
+  padding-bottom: 0;
 }
 
 .app-header {
@@ -105,6 +106,7 @@ const is = (p) => {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  width: 100%;
 }
 
 /* Tabs */
@@ -128,11 +130,12 @@ const is = (p) => {
   font-size: 0.95rem;
   font-weight: 500;
   transition: all 0.25s ease;
+  min-height: 44px; /* Mejor touch target */
 }
 
 .tab-icon {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   stroke-width: 1.8;
 }
 
@@ -158,5 +161,80 @@ const is = (p) => {
 .fade-leave-to {
   opacity: 0;
   transform: translateY(8px);
+}
+
+/* ========== RESPONSIVE ========== */
+
+/* Tablet */
+@media (max-width: 880px) {
+  .tab {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  #app {
+    padding-bottom: 80px; /* Espacio para nav bottom */
+  }
+
+  .app-header {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    margin-top: 0;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .app-header .absolute {
+    display: none; /* Ocultar UserMenu en mobile */
+  }
+
+  .tabs {
+    width: 100%;
+    max-width: 100%;
+    justify-content: space-around;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .tab {
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.7rem;
+    min-width: 64px;
+    text-align: center;
+  }
+
+  .tab span {
+    font-size: 0.7rem;
+    line-height: 1;
+  }
+
+  .tab-icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 2px;
+  }
+
+  .tab:hover {
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .tab.active {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+  }
 }
 </style>

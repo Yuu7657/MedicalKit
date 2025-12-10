@@ -500,4 +500,81 @@ textarea {
 .err {
   color: #dc2626;
 }
+
+/* ========== RESPONSIVE ========== */
+
+/* Tablet */
+@media (max-width: 720px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .overlay {
+    padding: 0;
+  }
+
+  .modal {
+    max-width: 100%;
+    width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    padding: 1rem;
+  }
+
+  .modal-header h2 {
+    font-size: 1.15rem;
+  }
+
+  .sub {
+    font-size: 0.85rem;
+  }
+
+  .field label {
+    font-size: 0.9rem;
+  }
+
+  input[type='text'],
+  input[type='date'],
+  input[type='time'],
+  textarea {
+    font-size: 16px; /* Prevenir zoom en iOS */
+  }
+
+  .horarios {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .horarios input {
+    width: 100%;
+  }
+
+  .btn.ghost,
+  .horarios .btn {
+    width: 100%;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+
+  .actions .btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+  }
+
+  .colors {
+    justify-content: space-between;
+  }
+
+  .dot {
+    width: 38px;
+    height: 38px; /* Mejor touch target */
+  }
+}
 </style>

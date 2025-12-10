@@ -319,4 +319,48 @@ function markTaken(med) {
     grid-template-columns: 1fr;
   }
 }
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .wrap {
+    margin: 1rem auto;
+    padding: 0 0.75rem;
+  }
+
+  .card {
+    padding: 0.9rem 1rem;
+  }
+
+  .card h2 {
+    font-size: 1.3rem;
+  }
+
+  .card h3 {
+    font-size: 1.1rem;
+  }
+
+  .row.gap {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .status {
+    text-align: center;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 0.7rem 1rem;
+  }
+
+  .dose {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+
+  .dose .btn.small {
+    width: 100%;
+  }
+}
 </style>

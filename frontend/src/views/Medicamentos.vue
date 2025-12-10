@@ -443,4 +443,128 @@ async function eliminar(id) {
   font-size: 0.75rem;
   font-weight: 600;
 }
+
+/* ========== RESPONSIVE ========== */
+
+/* Tablet - ocultar columnas menos importantes */
+@media (max-width: 880px) {
+  .table th:nth-child(4),
+  .table td:nth-child(4) {
+    display: none; /* Ocultar horarios en tablet */
+  }
+
+  .btn span {
+    display: none; /* Solo mostrar ícono en botón agregar */
+  }
+
+  .btn {
+    padding: 0.55rem 0.9rem;
+  }
+}
+
+/* Mobile - convertir tabla a cards */
+@media (max-width: 640px) {
+  .wrap {
+    margin: 1rem auto;
+    padding: 0 0.75rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .row.between {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .row.between h2 {
+    font-size: 1.3rem;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Ocultar tabla, mostrar cards */
+  .table {
+    display: none;
+  }
+
+  /* Cards personalizadas para mobile */
+  .table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .table tbody tr {
+    display: flex;
+    flex-direction: column;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .table tbody td {
+    display: block;
+    border: none;
+    padding: 0;
+  }
+
+  /* Añadir labels antes de cada dato */
+  .table tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #6b7280;
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .table tbody td:first-child::before {
+    content: '💊 Medicamento';
+  }
+
+  .table tbody td:nth-child(2)::before {
+    content: '💉 Dosis';
+  }
+
+  .table tbody td:nth-child(3)::before {
+    content: '🔁 Frecuencia';
+  }
+
+  .table tbody td:nth-child(4)::before {
+    content: '⏰ Horarios';
+  }
+
+  .table tbody td:nth-child(5)::before {
+    content: '📅 Período';
+  }
+
+  .table tbody td:nth-child(6)::before {
+    content: '⚙️ Acciones';
+  }
+
+  .acciones {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .icon-btn {
+    width: 44px;
+    height: 44px; /* Better touch target */
+  }
+
+  .icon-btn .icon {
+    width: 22px;
+    height: 22px;
+  }
+}
 </style>

@@ -9,6 +9,14 @@
     --mk-border: #e5e7eb;
     --mk-accent: #0ea5e9;
     --mk-accent-dark: #0369a1;
+
+    /* Breakpoints */
+    --breakpoint-mobile: 640px;
+    --breakpoint-tablet: 880px;
+    --breakpoint-desktop: 1024px;
+
+    /* Touch targets */
+    --touch-target-min: 44px;
 }
 
 *,
@@ -52,6 +60,7 @@ a {
 .btn,
 button {
     cursor: pointer;
+    min-height: var(--touch-target-min);
 }
 
 /* ========= MODO ALTO CONTRASTE =============================== */
@@ -153,7 +162,7 @@ html.mk-high-contrast a {
     color: #bfdbfe !important;
 }
 
-/* Chips / badges muy claros (como las “píldoras” de frecuencia) */
+/* Chips / badges muy claros (como las "píldoras" de frecuencia) */
 html.mk-high-contrast .chip,
 html.mk-high-contrast .badge,
 html.mk-high-contrast .pill {
@@ -179,4 +188,30 @@ html.mk-high-contrast textarea::placeholder {
 html.mk-high-contrast svg {
     stroke: currentColor;
     fill: none;
+}
+
+/* ========= RESPONSIVE GLOBAL ================================= */
+
+/* Prevenir zoom en inputs en iOS */
+@media (max-width: 640px) {
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="search"],
+    input[type="date"],
+    input[type="time"],
+    textarea,
+    select {
+        font-size: 16px !important;
+    }
+
+    /* Scroll suave en mobile */
+    html {
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+    }
 }
