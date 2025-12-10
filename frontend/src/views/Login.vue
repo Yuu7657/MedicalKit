@@ -282,9 +282,37 @@ h1 {
 }
 
 /* Responsive */
-@media (max-width: 480px) {
+@media (max-width: 640px) {
+  .auth-page {
+    padding: 1.5rem 0.75rem 2rem;
+  }
+
   .auth-card {
-    padding-inline: 1.4rem;
+    padding: 1.75rem 1.25rem;
+    border-radius: 20px;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  /* Prevenir zoom en iOS */
+  .field-input input {
+    font-size: 16px !important;
+  }
+
+  .badge {
+    width: 48px;
+    height: 48px;
+  }
+
+  .badge-icon {
+    width: 24px;
+    height: 24px;
   }
 }
 </style>

@@ -1,11 +1,18 @@
 <!-- src/components/AccessibilityMenu.vue -->
 <template>
-  <div class="a11y-wrapper">
+  <div 
+    class="a11y-wrapper" 
+    :class="{ dragging: isDragging }"
+    :style="fabStyle"
+  >
     <!-- FAB: solo abre/cierra el panel -->
     <button
       class="a11y-fab"
       type="button"
       @click="togglePanel"
+      @touchstart="handleTouchStart"
+      @touchmove="handleTouchMove"
+      @touchend="handleTouchEnd"
       :aria-expanded="open ? 'true' : 'false'"
       aria-haspopup="true"
       aria-label="Menú de accesibilidad"
@@ -61,7 +68,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue"
+import { reactive, ref, computed, watch, onMounted, onBeforeUnmount } from "vue"
 import {
   AdjustmentsHorizontalIcon, // FAB
   SquaresPlusIcon,
@@ -71,6 +78,7 @@ import {
 
 /* ----------------- Constantes ----------------- */
 const STORAGE_FONT_KEY = "mk_font_percent"
+const STORAGE_POS_KEY = "mk_fab_position"
 const DEFAULT_FONT = 100
 const MIN_FONT = 80
 const MAX_FONT = 140
@@ -79,12 +87,32 @@ const MAX_FONT = 140
 const open = ref(false)
 const baseFontSize = ref(DEFAULT_FONT) // porcentaje
 
+/* ----------------- Draggable (solo mobile) ----------------- */
+const isDragging = ref(false)
+const position = reactive({ x: 16, y: 16 }) // top-right default
+const touchStart = reactive({ x: 0, y: 0 })
+
+// Computed CSS variables
+const fabStyle = computed(() => {
+  if (window.innerWidth > 640) {
+    // Desktop/tablet: posición fija original
+    return {}
+  }
+  // Mobile: usa posición dinámica
+  return {
+    left: `${position.x}px`,
+    top: `${position.y}px`,
+    right: 'auto',
+    bottom: 'auto'
+  }
+})
+
 /* ----------------- Helpers DOM ----------------- */
 function applyFontSize() {
   document.documentElement.style.fontSize = `${baseFontSize.value}%`
 }
 
-/* ----------------- Acciones ----------------- */
+/* ----------------- Acciones Panel ----------------- */
 function togglePanel() {
   open.value = !open.value
 }
@@ -109,6 +137,43 @@ function resetAll() {
   localStorage.removeItem(STORAGE_FONT_KEY)
 }
 
+/* ----------------- Draggable Handlers ----------------- */
+function handleTouchStart(e) {
+  if (window.innerWidth > 640) return // Solo en mobile
+  
+  isDragging.value = true
+  const touch = e.touches[0]
+  touchStart.x = touch.clientX - position.x
+  touchStart.y = touch.clientY - position.y
+  
+  // Cerrar panel si está abierto
+  open.value = false
+}
+
+function handleTouchMove(e) {
+  if (!isDragging.value) return
+  e.preventDefault() // Prevenir scroll
+  
+  const touch = e.touches[0]
+  let newX = touch.clientX - touchStart.x
+  let newY = touch.clientY - touchStart.y
+  
+  // Límites de pantalla (considerar tamaño del botón: 48px)
+  const maxX = window.innerWidth - 48
+  const maxY = window.innerHeight - 48
+  
+  position.x = Math.max(0, Math.min(newX, maxX))
+  position.y = Math.max(0, Math.min(newY, maxY))
+}
+
+function handleTouchEnd() {
+  if (!isDragging.value) return
+  isDragging.value = false
+  
+  // Guardar posición en localStorage
+  localStorage.setItem(STORAGE_POS_KEY, JSON.stringify({ x: position.x, y: position.y }))
+}
+
 /* ----------------- Eventos globales ----------------- */
 function handleClickOutside(e) {
   const wrapper = document.querySelector(".a11y-wrapper")
@@ -125,7 +190,7 @@ function handleKeydown(e) {
 }
 
 onMounted(() => {
-  // Cargar preferencias guardadas SOLO de tamaño de fuente
+  // Cargar preferencias guardadas de tamaño de fuente
   try {
     const savedFont = parseInt(localStorage.getItem(STORAGE_FONT_KEY) ?? "", 10)
     if (!Number.isNaN(savedFont)) {
@@ -133,6 +198,20 @@ onMounted(() => {
     }
   } catch {
     // ignoramos errores de localStorage
+  }
+
+  // Cargar posición guardada del FAB (solo mobile)
+  if (window.innerWidth <= 640) {
+    try {
+      const savedPos = localStorage.getItem(STORAGE_POS_KEY)
+      if (savedPos) {
+        const parsed = JSON.parse(savedPos)
+        position.x = parsed.x
+        position.y = parsed.y
+      }
+    } catch {
+      // ignorar errores
+    }
   }
 
   applyFontSize()
@@ -243,15 +322,28 @@ onBeforeUnmount(() => {
 /* ========== RESPONSIVE ========== */
 @media (max-width: 640px) {
   .a11y-wrapper {
-    right: 1rem;
+    right: auto;
     bottom: auto;
-    top: 1rem; /* Mover arriba en mobile para no bloquear navegación */
+    /* left y top se controlan desde fabStyle computed */
+    transition: none; /* Sin transición cuando se arrastra */
+  }
+
+  .a11y-wrapper.dragging {
+    z-index: 70; /* Por encima de todo mientras arrastra */
+  }
+
+  .a11y-wrapper.dragging .a11y-fab {
+    transform: scale(1.1);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.4);
+    cursor: grabbing;
   }
 
   .a11y-fab {
     width: 48px;
     height: 48px;
     box-shadow: 0 8px 20px rgba(15, 23, 42, 0.3);
+    cursor: grab; /* Indicar que es arrastrable */
+    touch-action: none; /* Permitir manipulación táctil */
   }
 
   .icon-main {

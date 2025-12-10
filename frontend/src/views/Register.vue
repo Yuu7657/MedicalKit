@@ -102,4 +102,22 @@ button:disabled {
   font-size: 0.9rem;
   color: #64748b;
 }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .register-container {
+    margin: 2rem auto;
+    padding: 1.75rem 1.25rem;
+    border-radius: 16px;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  /* Prevenir zoom en iOS */
+  input {
+    font-size: 16px !important;
+  }
+}
 </style>
