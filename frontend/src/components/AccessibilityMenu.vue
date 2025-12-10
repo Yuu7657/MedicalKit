@@ -9,10 +9,11 @@
     <button
       class="a11y-fab"
       type="button"
-      @click="togglePanel"
-      @touchstart="handleTouchStart"
-      @touchmove="handleTouchMove"
+      @click="handleClick"
+      @touchstart.passive="handleTouchStart"
+      @touchmove.prevent="handleTouchMove"
       @touchend="handleTouchEnd"
+      @touchcancel="handleTouchEnd"
       :aria-expanded="open ? 'true' : 'false'"
       aria-haspopup="true"
       aria-label="Menú de accesibilidad"
@@ -138,9 +139,21 @@ function resetAll() {
 }
 
 /* ----------------- Draggable Handlers ----------------- */
+const dragStartTime = ref(0)
+const hasMoved = ref(false)
+
+function handleClick() {
+  // Solo abrir panel si NO fue un drag
+  if (!hasMoved.value) {
+    togglePanel()
+  }
+}
+
 function handleTouchStart(e) {
   if (window.innerWidth > 640) return // Solo en mobile
   
+  dragStartTime.value = Date.now()
+  hasMoved.value = false
   isDragging.value = true
   const touch = e.touches[0]
   touchStart.x = touch.clientX - position.x
@@ -152,7 +165,8 @@ function handleTouchStart(e) {
 
 function handleTouchMove(e) {
   if (!isDragging.value) return
-  e.preventDefault() // Prevenir scroll
+  
+  hasMoved.value = true // Marcamos que hubo movimiento
   
   const touch = e.touches[0]
   let newX = touch.clientX - touchStart.x

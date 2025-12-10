@@ -532,12 +532,17 @@ function goToMedicamentos() {
   .home {
     margin: 1rem auto 2rem;
     padding: 0 1rem 1rem;
+    text-align: center; /* Centrar todo en mobile */
   }
 
   /* Hero */
   .hero {
     gap: 1.5rem;
     margin-bottom: 2rem;
+  }
+
+  .hero-left {
+    text-align: center; /* Centrar contenido hero */
   }
 
   .hero-left h1 {
@@ -565,7 +570,7 @@ function goToMedicamentos() {
 
   .hero-checks {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center; /* Centrar checks */
     gap: 0.5rem;
   }
 
