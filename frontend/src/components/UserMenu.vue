@@ -1,9 +1,17 @@
 <!-- src/components/UserMenu.vue -->
 <template>
-  <div class="user-menu">
+  <div 
+    class="user-menu"
+    :class="{ dragging: isDragging }"
+    :style="menuStyle"
+  >
     <!-- Botón flotante / icono -->
     <button
-      @click="toggleMenu"
+      @click="handleClick"
+      @touchstart.passive="handleTouchStart"
+      @touchmove.prevent="handleTouchMove"
+      @touchend="handleTouchEnd"
+      @touchcancel="handleTouchEnd"
       class="user-icon"
       :title="user ? 'Cuenta' : 'Iniciar sesión'"
     >
@@ -106,6 +114,81 @@ const goRegister = () => {
   menuOpen.value = false
   router.push({ name: 'registro' })
 }
+
+/* ----------------- Draggable (solo desktop) ----------------- */
+const isDragging = ref(false)
+const position = ref({ x: 18, y: 18 }) // top-left default
+const touchStart = ref({ x: 0, y: 0 })
+const hasMoved = ref(false)
+
+// Computed CSS variables
+const menuStyle = computed(() => {
+  if (window.innerWidth > 640) {
+    // Desktop/tablet: usa posición dinámica
+    return {
+      left: `${position.value.x}px`,
+      top: `${position.value.y}px`,
+      right: 'auto',
+      bottom: 'auto'
+    }
+  }
+  // Mobile: oculto
+  return {}
+})
+
+function handleClick() {
+  if (!hasMoved.value) {
+    toggleMenu()
+  }
+}
+
+function handleTouchStart(e) {
+  if (window.innerWidth <= 640) return // Solo en desktop
+  
+  hasMoved.value = false
+  isDragging.value = true
+  const touch = e.touches[0]
+  touchStart.value.x = touch.clientX - position.value.x
+  touchStart.value.y = touch.clientY - position.value.y
+  
+  menuOpen.value = false // Cerrar menú al arrastrar
+}
+
+function handleTouchMove(e) {
+  if (!isDragging.value) return
+  
+  hasMoved.value = true
+  
+  const touch = e.touches[0]
+  let newX = touch.clientX - touchStart.value.x
+  let newY = touch.clientY - touchStart.value.y
+  
+  // Límites de pantalla
+  const maxX = window.innerWidth - 42
+  const maxY = window.innerHeight - 42
+  
+  position.value.x = Math.max(0, Math.min(newX, maxX))
+  position.value.y = Math.max(0, Math.min(newY, maxY))
+}
+
+function handleTouchEnd() {
+  if (!isDragging.value) return
+  isDragging.value = false
+  
+  // Guardar posición
+  localStorage.setItem('user_menu_position', JSON.stringify(position.value))
+}
+
+// Cargar posición guardada
+if (typeof window !== 'undefined' && window.innerWidth > 640) {
+  try {
+    const saved = localStorage.getItem('user_menu_position')
+    if (saved) {
+      const parsed = JSON.parse(saved)
+      position.value = parsed
+    }
+  } catch {}
+}
 </script>
 
 <style scoped>
@@ -130,6 +213,7 @@ const goRegister = () => {
   justify-content: center;
   box-shadow: 0 10px 25px rgba(14, 165, 233, 0.35);
   transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.2s;
+  touch-action: none; /* Permitir drag */
 }
 .user-icon:hover {
   transform: translateY(-1px) scale(1.03);
