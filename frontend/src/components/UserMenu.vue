@@ -285,4 +285,11 @@ input {
   opacity: 0;
   transform: translateY(-4px);
 }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 640px) {
+  .user-menu {
+    display: none; /* Ocultar en mobile para no estorbar */
+  }
+}
 </style>

@@ -239,4 +239,31 @@ onBeforeUnmount(() => {
   opacity: 0;
   transform: translateY(4px) scale(0.98);
 }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 640px) {
+  .a11y-wrapper {
+    right: 1rem;
+    bottom: auto;
+    top: 1rem; /* Mover arriba en mobile para no bloquear navegación */
+  }
+
+  .a11y-fab {
+    width: 48px;
+    height: 48px;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.3);
+  }
+
+  .icon-main {
+    width: 20px;
+    height: 20px;
+  }
+
+  .a11y-panel {
+    position: fixed;
+    right: 1rem;
+    top: 5rem;
+    margin-top: 0;
+  }
+}
 </style>

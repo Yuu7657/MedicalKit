@@ -488,45 +488,54 @@ async function eliminar(id) {
     justify-content: center;
   }
 
-  /* Ocultar tabla, mostrar cards */
-  .table {
+  /* Ocultar header de tabla */
+  .table thead {
     display: none;
   }
 
-  /* Cards personalizadas para mobile */
+  /* Tabla como contenedor flex vertical */
+  .table {
+    display: block;
+    border: none;
+  }
+
   .table tbody {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
   }
 
+  /* Cada fila es una card */
   .table tbody tr {
     display: flex;
     flex-direction: column;
-    background: #f9fafb;
+    background: #ffffff;
     border: 1px solid #e5e7eb;
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 1rem;
-    gap: 0.75rem;
+    gap: 0.85rem;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
   }
 
+  /* Cada celda */
   .table tbody td {
-    display: block;
+    display: flex;
+    flex-direction: column;
     border: none;
     padding: 0;
+    gap: 0.25rem;
   }
 
-  /* Añadir labels antes de cada dato */
+  /* Labels con emojis antes de cada dato */
   .table tbody td::before {
     content: attr(data-label);
     font-weight: 600;
     color: #6b7280;
     font-size: 0.8rem;
     display: block;
-    margin-bottom: 0.25rem;
   }
 
-  .table tbody td:first-child::before {
+  .table tbody td:nth-child(1)::before {
     content: '💊 Medicamento';
   }
 
@@ -550,21 +559,47 @@ async function eliminar(id) {
     content: '⚙️ Acciones';
   }
 
-  .acciones {
+  /* Name row adjustment */
+  .name-row {
     flex-direction: row;
+    align-items: flex-start;
+  }
+
+  /* Ajustar chips y pills */
+  .chip,
+  .pill {
+    display: inline-flex;
+    width: fit-content;
+  }
+
+  /* Acciones en fila */
+  .acciones {
+    flex-direction: row !important;
     justify-content: flex-start;
-    gap: 0.5rem;
+    gap: 0.75rem;
     margin-top: 0.25rem;
   }
 
   .icon-btn {
-    width: 44px;
-    height: 44px; /* Better touch target */
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
   }
 
   .icon-btn .icon {
     width: 22px;
     height: 22px;
+  }
+
+  /* Mensaje de tabla vacía */
+  .table tbody tr:has(td[colspan]) {
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+
+  .table tbody tr:has(td[colspan]) td::before {
+    content: '';
+    display: none;
   }
 }
 </style>
